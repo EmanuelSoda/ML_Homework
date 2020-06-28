@@ -35,6 +35,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import seaborn as sns
 import sklearn as sk
 from sklearn import preprocessing
+from sklearn.decomposition import PCA
 
 
 # In[17]:
@@ -47,7 +48,7 @@ train.head()
 # In[18]:
 
 
-get_ipython().run_line_magic('pinfo', 'train.corr')
+#get_ipython().run_line_magic('pinfo', 'train.corr')
 
 
 # In[9]:
@@ -65,14 +66,14 @@ sns.heatmap(corrMat);
 
 #scalo i dati per fare la PCA
 scaled_Train = preprocessing.scale(train.drop(['class'], axis = 1))
-pca = sk.decomposition.PCA()
+pca = PCA()
 pca.fit(scaled_Train)
 
 
 # In[ ]:
 
 
-get_ipython().run_line_magic('pinfo', 'sk.preprocessing.scale')
+#get_ipython().run_line_magic('pinfo', 'sk.preprocessing.scale')
 
 
 # In[ ]:
@@ -109,7 +110,7 @@ ax.scatter(xs = pca_df.PC1, ys = pca_df.PC2, zs = pca_df.PC3, marker= 'o', s = 1
 # In[ ]:
 
 
-get_ipython().run_line_magic('pinfo', 'ax.scatter')
+#get_ipython().run_line_magic('pinfo', 'ax.scatter')
 
 
 # In[ ]:
