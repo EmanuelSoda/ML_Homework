@@ -10,6 +10,7 @@ import seaborn as sns
 import sklearn as sk
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import normalize
 from sklearn.metrics import pairwise_distances
 from sklearn.feature_selection import RFECV
@@ -69,7 +70,7 @@ def visualizeComponentVariance(data, ylab, title, cum=False, per_var=0):
     return plot_labels
 
 
-def plotPCA(Label, pc, **label_):
+def plotPCA(Label, pc, clustering = False):
     unique_labelClass = np.unique(Label)
     nlabels = len(unique_labelClass)
     fig = plt.figure(figsize=(18, 10))
@@ -78,14 +79,32 @@ def plotPCA(Label, pc, **label_):
     smap = cm.ScalarMappable(norm=mcolors.Normalize(unique_labelClass.min(),
                                                     unique_labelClass.max() + 1),   cmap=cmap)
     ax.scatter(xs=pc.PC1, ys=pc.PC2, zs=pc.PC3, marker='o', s=25,
-               c=Label, cmap=cmap, )
+               c=Label, cmap=cmap, edgecolors='k')
     ax.set_xlabel(pc.PC1.name, size=15)
     ax.set_ylabel(pc.PC2.name, size=15)
     ax.set_zlabel(pc.PC3.name, size=15)
     cbar = plt.colorbar(mappable=smap, label='Label')
+    scatter = ax.scatter(pc.PC1, pc.PC2,
+                     c = Label, cmap = cmap, s = 50, edgecolors='k', alpha=0.7)
+    legend = ax.legend(scatter.legend_elements()[0], scatter.legend_elements()[1], loc ='upper right')
+    if(clustering == False):
+        legend.get_texts()[0].set_text("c-CS-m")
+        legend.get_texts()[1].set_text("c-CS-s")
+        legend.get_texts()[2].set_text('c-SC-m')
+        legend.get_texts()[3].set_text('c-SC-s')
+        legend.get_texts()[4].set_text('t-CS-m')
+        legend.get_texts()[5].set_text('t-CS-s')
+        legend.get_texts()[6].set_text('t-SC-m')
+        legend.get_texts()[7].set_text('t-SC-s')
+    #else:
+        #for i in unique_labelClass:
+        #    legend.get_texts()[i].set_text(str(i))
 
 
-def plot2dPCA(Label, pc1, pc2):
+
+
+
+def plot2dPCA(Label, pc1, pc2, clustering = False):
     unique_labelClass = np.unique(Label)
     nlabels = len(unique_labelClass)
     fig = plt.figure(figsize=(12, 7))
@@ -93,10 +112,27 @@ def plot2dPCA(Label, pc1, pc2):
     cmap = plt.cm.get_cmap('Set2', nlabels)
     smap = cm.ScalarMappable(norm=mcolors.Normalize(unique_labelClass.min(),
                                                     unique_labelClass.max() + 1), cmap=cmap)
-    plt.scatter(x=pc1, y=pc2, marker='o', s=25, c=Label, cmap=cmap)
+    plt.scatter(x=pc1, y=pc2, marker='o', s=25, c=Label, cmap=cmap, edgecolors='k')
     ax.set_xlabel(pc1.name, size=15)
     ax.set_ylabel(pc2.name, size=15)
     plt.colorbar(mappable=smap, label='Label Class')
+    scatter = ax.scatter(pc1, pc2,
+                     c = Label, cmap = cmap, s = 50, edgecolors='k', alpha=0.7)
+    legend = ax.legend(scatter.legend_elements()[0], scatter.legend_elements()[1], loc ='upper right')
+    if(clustering == False):
+        legend.get_texts()[0].set_text("c-CS-m")
+        legend.get_texts()[1].set_text("c-CS-s")
+        legend.get_texts()[2].set_text('c-SC-m')
+        legend.get_texts()[3].set_text('c-SC-s')
+        legend.get_texts()[4].set_text('t-CS-m')
+        legend.get_texts()[5].set_text('t-CS-s')
+        legend.get_texts()[6].set_text('t-SC-m')
+        legend.get_texts()[7].set_text('t-SC-s')
+    #else:
+        #for i in unique_labelClass:
+        #    legend.get_texts()[i].set_text(str(i))
+
+
 
 
 # metrics
@@ -198,14 +234,14 @@ def plot_sorted_sim(sim, y_pred):
 # to plot the Metrics
 
 
-def plotMetrics(X, models):
+def plotMetrics(X, models, metric = 'euclidean'):
     silhouette_list, wss_list, bss_list = [], [], []
     for model in models:
-        wss_list.append(wss(X, model.fit_predict(X), 'euclidean'))
-        bss_list.append(bss(X, model.fit_predict(X), 'euclidean'))
+        wss_list.append(wss(X, model.fit_predict(X), metric))
+        bss_list.append(bss(X, model.fit_predict(X), metric))
         if model.n_clusters > 1:
             silhouette_list.append(silhouette_score(
-                X, model.fit_predict(X), metric='euclidean'))
+                X, model.fit_predict(X), metric=metric))
 
     plt.plot(list(range(1, len(models) + 1)), wss_list, label='WSS', color='g')
     plt.plot(list(range(1, len(models) + 1)), wss_list, marker='o', color='g')
@@ -241,3 +277,120 @@ def selectFeatures(X, y):
              rfecv.grid_scores_, marker='o')
     plt.show()
     return rfecv
+
+
+
+
+
+
+
+def plotBoundary(x, y, z, pc1, pc2, label):
+    fig, ax = plt.subplots(figsize=(10,10))
+    ax.contourf(x, y, z, alpha = 0.1)
+    cmap =  plt.cm.get_cmap('Set2', 8)
+    scatter = ax.scatter(pc1, pc2,
+                     c = label, cmap = cmap, s = 50, edgecolors='k', alpha=0.7)
+    legend = ax.legend(scatter.legend_elements()[0], scatter.legend_elements()[1], loc ='upper right')
+    legend.get_texts()[0].set_text('c-CS-m')
+    legend.get_texts()[1].set_text('c-CS-s')
+    legend.get_texts()[2].set_text('c-SC-m')
+    legend.get_texts()[3].set_text('c-SC-s')
+    legend.get_texts()[4].set_text('t-CS-m')
+    legend.get_texts()[5].set_text('t-CS-s')
+    legend.get_texts()[6].set_text('t-SC-m')
+    legend.get_texts()[7].set_text('t-SC-s')
+
+    ax.set_title('Decision surface using the PCA trasformed/projected features')
+    plt.show()
+
+
+
+##########
+def get_Ncounts(y_predict, y_true, k, j=None):
+    N = y_true.shape[0]
+    Nk_mask = y_predict == k
+    Nk = Nk_mask.sum()
+    Nj, Nkj = None, None
+    if j is not None:
+        Nj_mask = y_true == j
+        Nj = Nj_mask.sum()
+        Nkj = np.logical_and(Nj_mask, Nk_mask).sum()
+    return N, Nk, Nj, Nkj
+
+def precision(y_predict, y_true, k, j):
+    N, Nk, Nj, Nkj = get_Ncounts(y_predict, y_true, k, j)
+    return Nkj / (Nk + 1e-8)
+
+def recall(y_predict, y_true, k, j):
+    N, Nk, Nj, Nkj = get_Ncounts(y_predict, y_true, k, j)
+    return Nkj / (Nj + 1e-8)
+
+def F(y_predict, y_true, k, j):
+    p = precision(y_predict, y_true, k, j)
+    r = recall(y_predict, y_true, k, j)
+    return (2*p*r) / (p+r)
+
+def purity(y_predict, y_true, k):
+    cls = np.unique(y_true)
+    prec = [precision(y_predict, y_true, k, j) for j in cls]
+    return max(prec)
+
+def tot_purity(y_predict, y_true):
+    N = y_true.shape[0]
+    nc = len(np.unique(y_true))
+    p = 0
+    for k in range(nc):
+        N, Nk, _, _ = get_Ncounts(y_predict, y_true, k)
+        pk = purity(y_predict, y_true, k)
+        p += (Nk / N) * pk
+    return p
+
+    # to plot the dendogram
+from scipy.cluster.hierarchy import dendrogram, linkage
+def plot_dendrogram(Z=None, model=None, X=None, **kwargs):
+    annotate_above = kwargs.pop('annotate_above', 0)
+
+    # Reconstruct the linakge matrix if the standard model API was used
+    if Z is None:
+        if hasattr(model, 'distances_') and model.distances_ is not None:
+            # create the counts of samples under each node
+            counts = np.zeros(model.children_.shape[0])
+            n_samples = len(model.labels_)
+            for i, merge in enumerate(model.children_):
+                current_count = 0
+                for child_idx in merge:
+                    if child_idx < n_samples:
+                        current_count += 1  # leaf node
+                    else:
+                        current_count += counts[child_idx - n_samples]
+                counts[i] = current_count
+
+            Z = np.column_stack([model.children_, model.distances_,
+                                              counts]).astype(float)
+        else:
+            Z = linkage(X, method=model.linkage, metric=model.affinity)
+
+    if 'n_clusters' in kwargs:
+        n_clusters = kwargs.pop('n_clusters')
+        # Set the cut point just above the last but 'n_clusters' merge
+        kwargs['color_threshold'] = Z[-n_clusters, 2] + 1e-6
+
+    fig = plt.figure(figsize=(20,10))
+    ax = fig.add_subplot(111)
+    # Plot the corresponding dendrogram
+    ddata = dendrogram(Z, ax=ax, **kwargs)
+
+    # Annotate nodes in the dendrogram
+    for i, d, c in zip(ddata['icoord'], ddata['dcoord'], ddata['color_list']):
+        x = 0.5 * sum(i[1:3])
+        y = d[1]
+        nid = np.where(Z[:,2] == y)[0][0]
+        if y > annotate_above:
+            plt.plot(x, y, 'o', c=c)
+            plt.annotate(str(nid-Z.shape[0]), (x, y), xytext=(0, -5),
+                         textcoords='offset points',
+                         va='top', ha='center')
+    if kwargs['color_threshold']:
+        plt.axhline(y=kwargs['color_threshold'], c='k')
+
+    return fig, ax
