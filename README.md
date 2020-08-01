@@ -1,3 +1,19 @@
-# ML_Homework
-This is an homework for Machine Learning courese of Bioinformatics for Computational Genomics master degree at POLIMI. 
+<a href="https://namu.io/wp-content/uploads/2019/05/machine_le_1-1232x693.jpg" alt="ML"></a>
 
+
+# ML_Homework
+This is an Homework for Machine Learning courese of Bioinformatics for Computational Genomics master degree at POLIMI. 
+
+
+## Installation
+### Clone
+
+- Clone this repo to your local machine using 'https://github.com/EmanuelSoda/ML_Homework.git'
+
+
+# Built With
+* Jupyter notebook
+* Python 
+
+# Authors
+* Emanuel Michele Soda 
