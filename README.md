@@ -1,4 +1,4 @@
-<a href="https://namu.io/wp-content/uploads/2019/05/machine_le_1-1232x693.jpg" alt="ML"></a>
+<a href=""><img src="https://namu.io/wp-content/uploads/2019/05/machine_le_1-1232x693.jpg" title="ML" alt="ML" </a>
 
 
 # ML_Homework
