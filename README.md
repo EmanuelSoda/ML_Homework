@@ -1,6 +1,3 @@
-<a href=""><img src="https://namu.io/wp-content/uploads/2019/05/machine_le_1-1232x693.jpg" title="ML" alt="ML" </a>
-
-
 # ML_Homework
 This is an Homework for Machine Learning courese of Bioinformatics for Computational Genomics master degree at POLIMI. 
 
