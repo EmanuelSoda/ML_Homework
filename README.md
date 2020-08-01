@@ -1,5 +1,5 @@
 # ML_Homework
-This is an Homework for Machine Learning courese of Bioinformatics for Computational Genomics master degree at POLIMI. 
+This is an Homework for Machine Learning course of Bioinformatics for Computational Genomics master degree at POLIMI.
 
 
 ## Installation
@@ -10,7 +10,7 @@ This is an Homework for Machine Learning courese of Bioinformatics for Computati
 
 # Built With
 * Jupyter notebook
-* Python 
+* Python
 
 # Authors
-* Emanuel Michele Soda 
+* Emanuel Michele Soda
