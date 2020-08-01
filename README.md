@@ -5,7 +5,7 @@ This is an Homework for Machine Learning courese of Bioinformatics for Computati
 ## Installation
 ### Clone
 
-- Clone this repo to your local machine using 'https://github.com/EmanuelSoda/ML_Homework.git'
+- Clone this repo to your local machine using "https://github.com/EmanuelSoda/ML_Homework.git"
 
 
 # Built With
