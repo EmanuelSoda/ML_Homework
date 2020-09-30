@@ -7,7 +7,7 @@ This is an Homework for Machine Learning course of **Bioinformatics for Computat
 
 - Clone this repo to your local machine using:
 ```bash
-git clone https://github.com/EmanuelSoda/TranscriptomicsProject.git
+git clone https://github.com/EmanuelSoda/ML_Homework.git
 ```
 
 
