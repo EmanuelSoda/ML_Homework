@@ -10,6 +10,9 @@ The aim of this project is to create a classifier able to classify type of mice 
 git clone https://github.com/EmanuelSoda/ML_Homework.git
 ```
 
+# View the project at 
+https://nbviewer.jupyter.org/github/EmanuelSoda/ML_Homework/blob/master/main_project.ipynb
+
 
 # Built With
 * Jupyter notebook
